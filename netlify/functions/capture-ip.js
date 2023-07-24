@@ -4,7 +4,8 @@ const fetch = require('node-fetch');
 exports.handler = async function(event, context) {
   // Get the IP address from the headers
   const ip = event.headers['client-ip'] || event.headers['x-forwarded-for'] || event.headers['x-real-ip'];
-
+  const userAgent = event.headers['user-agent'];
+  const language = event.headers['accept-language'];
   // Get the URL to redirect to from the query parameters
   const url = event.queryStringParameters.url;
   if (!url) {
@@ -32,7 +33,7 @@ exports.handler = async function(event, context) {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: `{"ip":"${ip}"}`,//JSON.stringify(data),
+    body: `{"ip":"${ip}", "user-agent":"${user-agent}", "language":"${language}"}`,//JSON.stringify(data),
   });
 
   // Check for errors
