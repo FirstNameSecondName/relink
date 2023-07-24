@@ -32,7 +32,7 @@ exports.handler = async function(event, context) {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(data),
+    body: `{"ip":"${ip}"}`,//JSON.stringify(data),
   });
 
   // Check for errors
