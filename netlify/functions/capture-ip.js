@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 
 exports.handler = async function(event, context) {
   // Get the IP address from the headers
-  const ip = event.headers['client-ip'];
+  const ip = event.headers['client-ip'] || event.headers['x-forwarded-for'] || event.headers['x-real-ip'];
 
   // Get the URL to redirect to from the query parameters
   const url = event.queryStringParameters.url;
