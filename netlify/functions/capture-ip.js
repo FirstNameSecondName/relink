@@ -27,7 +27,7 @@ exports.handler = async function(event, context) {
   data[datetime] = { ip };
 
   // Send a PUT request to your Firebase database
-  const firebaseUrl = 'https://your-firebase-database.firebaseio.com/path/to/your/data.json';
+  const firebaseUrl = 'https://storagefortrash-default-rtdb.europe-west1.firebasedatabase.app/relink.json';
   const response = await fetch(firebaseUrl, {
     method: 'PUT',
     headers: {
