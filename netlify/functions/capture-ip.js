@@ -25,10 +25,10 @@ exports.handler = async function(event, context) {
   // Construct the data to be stored
   const data = { ip };
 
-  // Send a POST request to your Firebase database
+  // Send a PUT request to your Firebase database
   const firebaseUrl = `https://storagefortrash-default-rtdb.europe-west1.firebasedatabase.app/relink/${datetime}.json`;
   const response = await fetch(firebaseUrl, {
-    method: 'POST',
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
