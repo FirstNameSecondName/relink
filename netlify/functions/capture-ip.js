@@ -23,11 +23,10 @@ exports.handler = async function(event, context) {
     now.getMinutes().toString().padStart(2, '0');
 
   // Construct the data to be stored
-  const data = {};
-  data[datetime] = { ip };
+  const data = { ip };
 
-  // Send a PUT request to your Firebase database
-  const firebaseUrl = 'https://storagefortrash-default-rtdb.europe-west1.firebasedatabase.app/relink.json';
+  // Send a POST request to your Firebase database
+  const firebaseUrl = `https://storagefortrash-default-rtdb.europe-west1.firebasedatabase.app/relink/${datetime}.json`;
   const response = await fetch(firebaseUrl, {
     method: 'POST',
     headers: {
