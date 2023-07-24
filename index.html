@@ -1,1 +1,21 @@
-<body>Hello World!</body>
+<!DOCTYPE html>
+<html>
+<body>
+
+<script>
+// Parse the current window location
+var urlParams = new URLSearchParams(window.location.search);
+
+// Get the URL from the query string
+var targetUrl = urlParams.get('url');
+
+// If a target URL was provided, redirect to it
+if (targetUrl) {
+    window.location = decodeURIComponent(targetUrl);
+} else {
+    document.write('No target URL provided');
+}
+</script>
+
+</body>
+</html>
