@@ -2,27 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relink</title>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            const referrer = document.referrer;
-
-            fetch('/capture-info', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    timezone: timezone,
-                    referrer: referrer
-                })
-            });
-        });
-    </script>
+    <title>Redirecting...</title>
 </head>
 <body>
     Redirecting...
+    <script>
+        async function sendInfo() {
+            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const referrer = document.referrer;
+            await fetch('/capture-info', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ timeZone, referrer })
+            });
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectUrl = urlParams.get('url');
+            window.location.href = redirectUrl;
+        }
+        sendInfo();
+    </script>
 </body>
 </html>
