@@ -12,12 +12,14 @@
         async function sendInfo() {
             const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 			const offset = new Date().getTimezoneOffset();
+			const hours = -offset / 60;
+			const timeZoneString = `UTC${hours >= 0 ? '+' : ''}${hours}`;
             const referrer = document.referrer;
             await fetch('/capture-info', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-					timeZone: `${timeZone} (${offset})`,
+					timeZone: `${timeZone} (${timeZoneString})`,
 					referrer: referrer
 				})
             });
