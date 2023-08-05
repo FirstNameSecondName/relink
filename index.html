@@ -1,21 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relink</title>
+    <script>
+        window.onload = function() {
+            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const data = {
+                timeZone: timeZone,
+                referrer: document.referrer
+            };
+
+            fetch('http://18.216.50.200:3000/relink?url=https://google.com', {
+                method: 'GET',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
 <body>
-
-<script>
-// Parse the current window location
-var urlParams = new URLSearchParams(window.location.search);
-
-// Get the URL from the query string
-var targetUrl = urlParams.get('url');
-
-// If a target URL was provided, redirect to it
-if (targetUrl) {
-    window.location = decodeURIComponent(targetUrl);
-} else {
-    document.write('No target URL provided');
-}
-</script>
-
 </body>
 </html>
