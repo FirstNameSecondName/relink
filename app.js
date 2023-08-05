@@ -12,17 +12,18 @@ app.get('*', async (req, res) => {
   const language = req.headers['accept-language'];
   let dateTime = new Date().toISOString().replace(/[^0-9]/g, "").slice(2,12);
 
+  const expressRes = res;
   // Відправка даних до Firebase
   const response = await fetch('https://storagefortrash-default-rtdb.europe-west1.firebasedatabase.app/relink/' + dateTime + '.json', {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ip: ip, userAgent: userAgent, language: language }),
-  }).then(res => {
+  }).then(firebaseRes  => {
     console.log(req.query.url); // add this line to debug
-    res.redirect(req.query.url);
+    expressRes.redirect(req.query.url);
   })
   .catch(err => {
-    res.send("Error: " + err);
+    expressRes.send("Error: " + err);
   });
 
   // Перенаправлення користувача до запитаного URL
