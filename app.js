@@ -17,11 +17,17 @@ app.get('*', async (req, res) => {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ip: ip, userAgent: userAgent, language: language }),
+  }).then(res => {
+    console.log(req.query.url); // add this line to debug
+    res.redirect(req.query.url);
+  })
+  .catch(err => {
+    res.send("Error: " + err);
   });
 
   // Перенаправлення користувача до запитаного URL
-  const requestedUrl = req.originalUrl.slice(1);
-  res.redirect(requestedUrl);
+  //const requestedUrl = req.originalUrl.slice(1);
+  //res.redirect(requestedUrl);
 });
 
 // Запуск додатку на порті 3000
