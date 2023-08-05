@@ -5,26 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Relink</title>
     <script>
-        window.onload = function() {
-            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            const data = {
-                timeZone: timeZone,
-                referrer: document.referrer
-            };
+        document.addEventListener('DOMContentLoaded', function() {
+            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const referrer = document.referrer;
 
-            fetch('http://18.216.50.200:3000/relink?url=https://google.com', {
-                method: 'GET',
-                body: JSON.stringify(data),
+            fetch('/capture-info', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.error('Error:', error));
-        }
+                },
+                body: JSON.stringify({
+                    timezone: timezone,
+                    referrer: referrer
+                })
+            });
+        });
     </script>
 </head>
 <body>
+    Redirecting...
 </body>
 </html>
