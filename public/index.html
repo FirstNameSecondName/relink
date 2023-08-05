@@ -11,11 +11,15 @@
     <script>
         async function sendInfo() {
             const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+			const offset = new Date().getTimezoneOffset();
             const referrer = document.referrer;
             await fetch('/capture-info', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ timeZone, referrer })
+                body: JSON.stringify({
+					timeZone: `${timeZone} (${offset})`,
+					referrer: referrer
+				})
             });
             const urlParams = new URLSearchParams(window.location.search);
             const redirectUrl = urlParams.get('url');
