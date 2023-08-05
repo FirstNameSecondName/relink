@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 
+app.use(express.static('public'));
 // Створення маршруту GET, який обробляє всі вхідні запити
 app.get('*', async (req, res) => {
   // Отримання IP-адреси та інших заголовків з запиту
