@@ -3,6 +3,8 @@ const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
 const wrtc = require('wrtc');
 
+const http = require('http'); 
+
 const https = require('https');
 const fs = require('fs');
 
@@ -18,6 +20,15 @@ const credentials = {
 };
 
 const app = express();
+
+
+app.use((req, res, next) => {
+    if (!req.secure) {
+        return res.redirect(301, `https://${req.headers.host}${req.originalUrl}`);
+    }
+    next();
+});
+
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
@@ -83,7 +94,7 @@ app.get('/relink', (req, res) => {
 const httpsServer = https.createServer(credentials, app);
 
 app.listen(3000, () => console.log('Server is running on port 3000'));
-app.listen(80, () => {
+http.createServer(app).listen(80, () => {
     console.log(`Server is running on port ${80}`);
 });
 httpsServer.listen(443, () => {
