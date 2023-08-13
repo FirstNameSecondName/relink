@@ -7,27 +7,8 @@
     <title>Redirecting...</title>
 </head>
 <body>
-    Redirecting...
     <script>
-        async function sendInfo() {
-            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-			const offset = new Date().getTimezoneOffset();
-			const hours = -offset / 60;
-			const timeZoneString = `UTC${hours >= 0 ? '+' : ''}${hours}`;
-            const referrer = document.referrer;
-            await fetch('/capture-info', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-					timeZone: `${timeZone} (${timeZoneString})`,
-					referrer: referrer
-				})
-            });
-            const urlParams = new URLSearchParams(window.location.search);
-            const redirectUrl = urlParams.get('url');
-            window.location.href = redirectUrl;
-        }
-        sendInfo();
-    </script>
+		window.location.href = "http://coturntest.mooo.com:3000/?url=https%3A%2F%2Fgoo.gl%2Fmaps%2Fqh2dED644n5oGDcy7";
+	</script>
 </body>
 </html>

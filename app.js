@@ -60,10 +60,13 @@ app.post('/capture-info', async (req, res) => {
 
 app.get('/relink', (req, res) => {
     if (req.query.url) {
-        res.sendFile(__dirname + '/public/index.html');
+        res.sendFile(__dirname + '/public/redirect.html');
     } else {
         res.send('URL parameter is missing.');
     }
 });
 
 app.listen(3000, () => console.log('Server is running on port 3000'));
+app.listen(80, () => {
+    console.log(`Server is running on port ${80}`);
+});
