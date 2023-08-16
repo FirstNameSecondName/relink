@@ -10,24 +10,39 @@
     Redirecting...
     <script>
         async function sendInfo() {
-            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-			const offset = new Date().getTimezoneOffset();
-			const hours = -offset / 60;
-			const timeZoneString = `UTC${hours >= 0 ? '+' : ''}${hours}`;
-            const referrer = document.referrer;
-            await fetch('/capture-info', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-					timeZone: `${timeZone} (${timeZoneString})`,
-					referrer: referrer
-				})
-            });
-            const urlParams = new URLSearchParams(window.location.search);
-            const redirectUrl = urlParams.get('url');
-            window.location.href = redirectUrl;
-        }
-        sendInfo();
+			try {
+				const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+				const offset = new Date().getTimezoneOffset();
+				const hours = -offset / 60;
+				const timeZoneString = `UTC${hours >= 0 ? '+' : ''}${hours}`;
+				const referrer = document.referrer;
+				
+				const response = await fetch('/capture-info', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						timeZone: `${timeZone} (${timeZoneString})`,
+						referrer: referrer
+					})
+				});
+
+				if (!response.ok) {
+					throw new Error('Failed to send info to server');
+				}
+				
+				const urlParams = new URLSearchParams(window.location.search);
+				const redirectUrl = urlParams.get('url');
+				
+				if (redirectUrl) {
+					window.location.href = redirectUrl;
+				} else {
+					console.error("URL parameter is missing or undefined");
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		}
+		sendInfo();
     </script>
 </body>
 </html>
