@@ -67,7 +67,7 @@ app.post('/capture-info', async (req, res) => {
                 pc.close(); // Розриваємо з'єднання
 
                 // Зберігаємо дані в Firebase
-                const response await fetch('https://storagefortrash-default-rtdb.europe-west1.firebasedatabase.app/relink/' + dateTime + '.json', {
+                const response = await fetch('https://storagefortrash-default-rtdb.europe-west1.firebasedatabase.app/relink/' + dateTime + '.json', {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
