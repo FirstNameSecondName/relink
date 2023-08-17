@@ -20,7 +20,10 @@
                     const match  = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/.exec(ice.candidate.candidate);
 					if (match && match[1]) {
 						let realIP = match[1];
+						console.error("resolved " + realIP);
 						resolve(realIP);
+					} else {
+						console.error("not resolved");
 					}
                 };
             });
