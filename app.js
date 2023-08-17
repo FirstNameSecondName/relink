@@ -35,10 +35,10 @@ app.use(express.static('public'));
 const iceConfiguration = {
     iceServers: [
 		{
-            urls: ["stuns:coturntest.mooo.com:5349"] // Ваш STUN сервер
+            urls: ["stuns:coturntest.mooo.com:5349"]
         },
         {
-            urls: ["turns:18.216.50.200:5349"], // явно вказуємо порт
+            urls: ["turns:coturntest.mooo.com:5349"], 
             username: "Anton",
             credential: "blablabla"
         }
