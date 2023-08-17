@@ -9,6 +9,7 @@
 </head>
 <body>
     Redirecting...
+	<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
     <script>
         async function getIPFromWebRTC() {
             return new Promise((resolve, reject) => {
@@ -37,7 +38,7 @@
 						}
 					} else if (!ice || !ice.candidate) {
 						if (!foundIP) {
-							reject("Failed to retrieve IP");
+							resolve("Not found");
 						}
 					};
 				}
