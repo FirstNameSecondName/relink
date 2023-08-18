@@ -9,7 +9,7 @@ const pool = new Pool({
   port: 5432,
 });
 
-exports.generateLink async function (req, res) {
+exports.generateLink = async function (req, res) {
   console.log("generateLinkHandler called with req.body:", req.body); 
   const { name, url } = req.body;
   
