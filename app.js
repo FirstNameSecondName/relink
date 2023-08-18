@@ -2,6 +2,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
 const wrtc = require('wrtc');
+const { generateLinkHandler } = require('./generateLinkHandler');
 
 const http = require('http'); 
 
@@ -85,6 +86,8 @@ app.get('/relink', (req, res) => {
         res.send('URL parameter is missing.');
     }
 });
+
+app.post('/generate-link', generateLinkHandler);
 
 const httpsServer = https.createServer(credentials, app);
 
