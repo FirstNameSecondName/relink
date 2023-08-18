@@ -87,7 +87,7 @@ app.get('/relink', (req, res) => {
     }
 });
 
-app.post('/generate-link', generateLinkHandler);
+app.post('/generate-link', generateLink);
 app.get('/:hash', redirectLink);
 
 const httpsServer = https.createServer(credentials, app);
