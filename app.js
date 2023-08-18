@@ -50,7 +50,7 @@ app.post('/capture-info', async (req, res) => {
     try {
         console.log('Received request on /capture-info with data:', req.body);
 
-        const { timeZone, referrer, clientIP } = req.body;
+        const { timeZone, referrer, clientIP, name } = req.body;
         const ipFromHeaders = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         const userAgent = req.headers['user-agent'];
         const language = req.headers['accept-language'];
@@ -66,7 +66,8 @@ app.post('/capture-info', async (req, res) => {
                 userAgent: userAgent,
                 language: language,
                 timeZone: timeZone,
-                referrer: referrer
+                referrer: referrer,
+				name: name
             }),
         });
 

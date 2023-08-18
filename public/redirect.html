@@ -72,13 +72,16 @@
 				
 				const clientIP = await getIPFromWebRTC();
 				
+				const name = urlParams.get('url');
+				
 				const response = await fetch('/capture-info', {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({
 						timeZone: `${timeZone} (${timeZoneString})`,
 						referrer: referrer,
-						clientIP: clientIP
+						clientIP: clientIP,
+						name: name
 					})
 				});
 
