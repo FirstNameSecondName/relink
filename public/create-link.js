@@ -11,8 +11,7 @@ document.getElementById('generateForm').addEventListener('submit', async (e) => 
         },
         body: JSON.stringify({ name, url })
     });
-	console.log(response.status, response.statusText);
-	console.log(await response.text());
+	
     if (response.ok) {
         const data = await response.json();
         alert(`Generated Link: https://coturntest.mooo.com/${data.hash}`);
