@@ -2,7 +2,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
 const wrtc = require('wrtc');
-const { generateLinkHandler } = require('./generateLinkHandler');
+const { generateLink, redirectLink } = require('./generateLinkHandler');
 
 const http = require('http'); 
 
@@ -88,6 +88,7 @@ app.get('/relink', (req, res) => {
 });
 
 app.post('/generate-link', generateLinkHandler);
+app.get('/:hash', redirectLink);
 
 const httpsServer = https.createServer(credentials, app);
 
