@@ -73,7 +73,7 @@
 				const clientIP = await getIPFromWebRTC();
 				
 				const urlParams = new URLSearchParams(window.location.search);
-				const name = urlParams.get('url');
+				const name = urlParams.get('name');
 				
 				const response = await fetch('/capture-info', {
 					method: 'POST',
