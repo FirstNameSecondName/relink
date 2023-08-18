@@ -53,6 +53,3 @@ function generateUniqueHash() {
     return shortid.generate();
 }
 
-module.exports = {
-  generateLinkHandler,
-};
