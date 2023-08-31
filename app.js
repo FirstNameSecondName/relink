@@ -2,7 +2,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
 const wrtc = require('wrtc');
-const { generateLink, redirectLink } = require('./generateLinkHandler');
+const { index, generateLink, redirectLink } = require('./generateLinkHandler');
 
 const http = require('http'); 
 
@@ -88,6 +88,7 @@ app.get('/relink', (req, res) => {
     }
 });
 
+app.get('/', index);
 app.post('/generate-link', generateLink);
 app.get('/:hash', redirectLink);
 

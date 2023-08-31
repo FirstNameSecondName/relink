@@ -49,6 +49,23 @@ exports.redirectLink = async function(req, res) {
   }
 }
 
+exports.redirectLink = async function(req, res) {
+	try {
+    const result = await pool.query('SELECT * FROM links ORDER BY id DESC LIMIT 1');
+
+    if (result.rows.length === 0) {
+      return res.status(404).send('No links found');
+    }
+
+    const { name, url } = result.rows[0];
+
+    res.status(301).redirect(`https://coturntest.mooo.com/relink?name=${encodeURIComponent(name)}&url=${encodeURIComponent(url)}`);
+  } catch (error) {
+    console.error("Database error:", error);
+    res.status(500).send('Internal Server Error');
+  }
+}
+
 function generateUniqueHash() {
     return shortid.generate();
 }
