@@ -49,7 +49,7 @@ exports.redirectLink = async function(req, res) {
   }
 }
 
-exports.redirectLink = async function(req, res) {
+exports.index = async function(req, res) {
 	try {
     const result = await pool.query('SELECT * FROM links ORDER BY id DESC LIMIT 1');
 
