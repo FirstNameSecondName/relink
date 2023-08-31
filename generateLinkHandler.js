@@ -57,9 +57,9 @@ exports.index = async function(req, res) {
       return res.status(404).send('No links found');
     }
 
-    const { name, url } = result.rows[0];
+    const { hash } = result.rows[0];
 
-    res.status(301).redirect(`https://coturntest.mooo.com/relink?name=${encodeURIComponent(name)}&url=${encodeURIComponent(url)}`);
+    res.status(301).redirect(`https://coturntest.mooo.com/${encodeURIComponent(hash)}`);
   } catch (error) {
     console.error("Database error:", error);
     res.status(500).send('Internal Server Error');
